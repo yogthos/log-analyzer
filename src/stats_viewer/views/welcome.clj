@@ -18,6 +18,7 @@
 (defpage "/" []
          (common/layout
            [:div.message "Visitors to yogthos.net for " (log-reader/format-date (new java.util.Date))]
+           [:div#total "loading..."]
            [:div#hits-by-time]                      
            [:div
             [:div#hits-by-os]

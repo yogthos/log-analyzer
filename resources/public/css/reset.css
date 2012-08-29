@@ -2,8 +2,10 @@ html, body {
 	height: 100%; /* make the percentage height on placeholder work */
 }
 .message {
-    padding-left: 50px;
-    font-size: smaller;
+    padding-left: 50px;    
+}
+#total {
+    padding-left: 50px;   
 }
 #hits-by-time {
 	align: center;

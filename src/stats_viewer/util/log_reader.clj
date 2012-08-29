@@ -9,7 +9,6 @@
     java.io.RandomAccessFile))
 
 ;(def log-path "yogthos.net")
-;(def log-path "/home/yogthos/tomcat/logs/localhost_access_log.")
 (def log-path "/usr/local/apache/domlogs/yogthos/yogthos.net")
 
 
@@ -77,11 +76,23 @@
                   :else "other")))
     (map (fn [[k v]] {:label k :data (count v)}))))
 
-(defn group-by-route [logs]
-  (->> logs
-    (group-by (fn [{:keys [route]}] (second (.split route " "))))
-    (map (fn [[k v]] {:label k :data (count v)}))))
+(re-find
+  #"/blog/\d+"
+  (second (.split 
+  (:route (parse-line "87.189.125.250 - - [28/Aug/2012:14:33:37 +0200] \"GET /blg/24-Reflecting+on+performance HTTP/1.1\" 200 3987 \"http://yogthos.net/\" \"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0\""))
+  " ")))
 
+(defn group-by-route [logs]
+  (map 
+    (fn [[k v]] {:label k :data (count v)})
+    (dissoc        
+      (group-by (fn [{:keys [route]}] 
+                  (let [route (second (.split route " "))]
+                    (if (= "/" route) route
+                      (if-let [route (re-find #"/blog/\d+" route)]
+                        route "other")))) 
+                logs)
+      "other")))
 
 (defn get-logs []
   (with-open [rdr (reader log-path)]    
@@ -90,6 +101,7 @@
                  (map parse-line)
                  (group-by :ip)
                  (mapcat second))]
-      {:time  (group-by-time logs)
+      {:total (count logs)
+       :time  (group-by-time logs)
        :os    (group-by-os logs)
        :route (group-by-route logs)})))

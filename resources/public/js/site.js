@@ -9,18 +9,20 @@ function hitsByTime(d) {
 }
 
 function hitsByRoute(d) {     
-	var options = {
-        series: {bars: { show: true, barWidth: 0.3, align:'center'}},
-        multiplebars:true};
-	$.plot($("#hits-by-route"), d, options);
+	$.plot($("#hits-by-route"), d,
+	{series: {pie: {show: true,
+	                combine: {color: '#999',
+                              threshold: 0.01}}},
+     legend: {show: false}});
 }
 
 $(document).ready(function(){	
 	$.post('/stats-viewer/get-logs', 
-	       function(data){	       	
+	       function(data){	       	   
+	       	   $("#total").text("total hits: " + data.total);	       	
 	           hitsByTime(data.time);
 	           hitsByOS(data.os);
-	           //hitsByRoute(data.route);
+	           hitsByRoute(data.route);
 	       });		
 });
 

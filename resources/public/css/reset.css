@@ -1,0 +1,32 @@
+html, body {
+	height: 100%; /* make the percentage height on placeholder work */
+}
+.message {
+    padding-left: 50px;
+    font-size: smaller;
+}
+#hits-by-time {
+	align: center;
+	width:850px;
+	height:400px;
+	margin-bottom:50px;	
+}
+#overview {
+	margin-left: 50px;
+	margin-top: 20px;
+	width: 400px;
+	height: 50px;
+}
+#hits-by-os {	
+	width: 400px;
+	height: 400px;
+	float: left;
+	margin-left: 25px;
+	margin-right: 25px;	
+}
+#hits-by-route {
+	width:400px;
+	height:400px;
+	float:left;	
+}    
+

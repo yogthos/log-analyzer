@@ -45,14 +45,10 @@
   ([date fmt]
     (.format (new java.text.SimpleDateFormat fmt) date)))
 
-(defn accesses-by-browser [browsers os]
-  (count (filter (partial re-find (re-pattern os)) browsers)))
-
 ;;todo use an agent to tail the file
 #_(doseq [line (line-seq rdr)]
       (let [date (round-ms-down-to-nearest-sec (:access-time (parse-line line)))] 
         (swap! logs update-in [date] (fn [x] (if x (inc x) 1)))))
-
 
 (defn group-by-time [logs]
   (->> logs
@@ -60,7 +56,6 @@
                       (fn [x] (if x (inc x) 1))) 
             (sorted-map))
     vec))
-
 
 (defn group-by-os [logs]  
   (->> logs
@@ -75,12 +70,6 @@
                   (re-find #"Windows" browser) "Windows"
                   :else "other")))
     (map (fn [[k v]] {:label k :data (count v)}))))
-
-(re-find
-  #"/blog/\d+"
-  (second (.split 
-  (:route (parse-line "87.189.125.250 - - [28/Aug/2012:14:33:37 +0200] \"GET /blg/24-Reflecting+on+performance HTTP/1.1\" 200 3987 \"http://yogthos.net/\" \"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0\""))
-  " ")))
 
 (defn group-by-route [logs]
   (map 

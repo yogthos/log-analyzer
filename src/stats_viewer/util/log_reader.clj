@@ -1,15 +1,14 @@
 (ns stats-viewer.util.log-reader
   (:use clojure.java.io)
   (:import         
-    [java.io FileInputStream BufferedReader InputStreamReader]
+    [java.io File FileInputStream BufferedReader InputStreamReader]    
     java.util.Date
     java.util.Calendar
     java.text.SimpleDateFormat
     java.util.zip.GZIPInputStream
     java.io.RandomAccessFile))
 
-;(def log-path "yogthos.net")
-(def log-path "/usr/local/apache/domlogs/yogthos/yogthos.net")
+(def log-path "/var/log/glassfish-access-logs/")
 
 
 (defn parse-line [line]
@@ -64,9 +63,9 @@
                   (nil? browser) "other"
                   (re-find #"iPhone" browser) "iPhone"
                   (re-find #"iPad" browser) "iPad"
+                  (re-find #"Android" browser) "Android"
                   (re-find #"OS X" browser) "OS X"
-                  (re-find #"Linux" browser) "Linux"
-                  (re-find #"Android" browser) "Android"                                                       
+                  (re-find #"Linux" browser) "Linux"                                                                         
                   (re-find #"Windows" browser) "Windows"
                   :else "other")))
     (map (fn [[k v]] {:label k :data (count v)}))))
@@ -83,8 +82,15 @@
                 logs)
       "other")))
 
+(defn list-files [path] 
+  (->> path
+    (new File)
+    (.listFiles)
+    (sort-by (memfn lastModified))
+    (map (memfn getName))))
+
 (defn get-logs []
-  (with-open [rdr (reader log-path)]    
+  (with-open [rdr (reader (last (list-files log-path)))]    
     (let [logs (->> rdr
                  line-seq
                  (map parse-line)

@@ -5,7 +5,7 @@ function hitsByOS(d) {
 }
 
 function hitsByTime(d) {
-	$.plot($("#hits-by-time"), [d], { xaxis: { mode: "time", minTickSize: [1, "hour"]}});
+   $.plot($("#hits-by-time"), [d], {xaxis: { mode: "time", minTickSize: [1, "minute"]}});
 }
 
 function hitsByRoute(d) {     

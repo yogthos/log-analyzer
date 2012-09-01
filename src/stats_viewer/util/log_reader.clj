@@ -86,11 +86,12 @@
   (->> path
     (new File)
     (.listFiles)
+    (filter #(.startsWith (.getName %) "server_access_log") )
     (sort-by (memfn lastModified))
     (map (memfn getName))))
 
 (defn get-logs []
-  (with-open [rdr (reader (last (list-files log-path)))]    
+  (with-open [rdr (reader (last (str log-path (list-files log-path))))]    
     (let [logs (->> rdr
                  line-seq
                  (map parse-line)

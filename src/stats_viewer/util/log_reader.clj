@@ -91,7 +91,7 @@
     (map (memfn getName))))
 
 (defn get-logs []
-  (with-open [rdr (reader (last (str log-path (list-files log-path))))]    
+  (with-open [rdr (reader (str log-path (last (list-files log-path))))]    
     (let [logs (->> rdr
                  line-seq
                  (map parse-line)
@@ -101,3 +101,4 @@
        :time  (group-by-time logs)
        :os    (group-by-os logs)
        :route (group-by-route logs)})))
+(get-logs)

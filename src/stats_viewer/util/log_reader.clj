@@ -101,4 +101,3 @@
        :time  (group-by-time logs)
        :os    (group-by-os logs)
        :route (group-by-route logs)})))
-(get-logs)

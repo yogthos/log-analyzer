@@ -26,5 +26,5 @@
      [:div#hits-by-route]]))
 
 (defpage [:post "/get-logs"] []  
-  (cache :hits (response/json (log-reader/get-logs))))
+  (cache :hits (response/json (log-reader/get-logs 5))))
 

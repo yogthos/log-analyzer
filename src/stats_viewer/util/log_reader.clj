@@ -9,6 +9,7 @@
     java.io.RandomAccessFile))
 
 (def log-path "/var/log/glassfish-access-logs/")
+;(def log-path "logs/")
 
 (defn parse-line [line]
   (merge 
@@ -78,22 +79,27 @@
                 logs)
       "other")))
 
-(defn list-files [path] 
-  (->> path
+(defn list-files [] 
+  (->> log-path
     (new File)
     (.listFiles)
     (filter #(.startsWith (.getName %) "server_access_log") )
     (sort-by (memfn lastModified))
-    (map (memfn getName))))
+    (map #(str log-path (.getName %)))))
 
-(defn get-logs []
-  (with-open [rdr (reader (str log-path (last (list-files log-path))))]    
-    (let [logs (->> rdr
-                 line-seq
-                 (map parse-line)
-                 (group-by :ip)
-                 (mapcat second))]
-      {:total (count logs)
-       :time  (group-by-time logs)
-       :os    (group-by-os logs)
-       :route (group-by-route logs)})))
+(defn parse-files [files]
+  (mapcat
+    #(with-open [rdr (reader %)] 
+       (doall (->> rdr line-seq (map parse-line))))
+    files))
+
+(defn get-logs [n]
+  (let [logs (->>
+               (parse-files (take 5 (list-files)))
+               (group-by :ip)
+               (mapcat second))] 
+    {:total (count logs)
+     :time  (group-by-time logs)
+     :os    (group-by-os logs)
+     :route (group-by-route logs)}))
+

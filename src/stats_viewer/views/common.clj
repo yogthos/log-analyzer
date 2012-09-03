@@ -1,6 +1,11 @@
 (ns stats-viewer.views.common
   (:use [noir.core :only [defpartial]] hiccup.page))
 
+(defmacro local-redirect [url]
+  `(noir.response/redirect 
+     (if-let [context# (:context (noir.request/ring-request))]
+       (str context# ~url) ~url)))
+
 (defpartial layout [& content]
             (html5
               [:head

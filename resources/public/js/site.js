@@ -16,8 +16,10 @@ function hitsByRoute(d) {
      legend: {show: false}});
 }
 
-$(document).ready(function(){	
-	$.post('/stats-viewer/get-logs', 
+$(document).ready(function(){
+    var context = $('#context').val();
+    var url = context ? context + '/get-logs' : '/get-logs';	
+	$.post(url, 
 	       function(data){	       	   
 	       	   $("#total").text("total hits: " + data.total);	       	
 	           hitsByTime(data.time);

@@ -10,7 +10,6 @@
 
 (def log-path "/var/log/glassfish-access-logs/")
 
-
 (defn parse-line [line]
   (merge 
     {:ip (re-find #"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b" line) 
@@ -32,9 +31,6 @@
 (defn round-ms-down-to-nearest-sec [date]
   (when date
     ( * 1000 (quot (.getTime date) 1000))))
-
-(defn round-ms-down-to-nearest-min [date]
-  (when date (* 60000 (quot (.getTime date) 60000))))
 
 (defn to-date [s]
   (.parse (new SimpleDateFormat "dd MMM yyyy") s))

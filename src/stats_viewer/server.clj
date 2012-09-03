@@ -21,7 +21,7 @@
          :session-cookie-attrs {:max-age 1800000}})
     fix-base-url))
 
-(defn -main [& m]
+(defn -main [& m]  
   (let [mode (keyword (or (first m) :dev))
         port (Integer. (get (System/getenv) "PORT" "8080"))]
     (server/start port {:mode mode

@@ -19,7 +19,7 @@
 (defpage "/" req  
   (common/layout  
     (hidden-field "context" (:context (request/ring-request)))
-    [:div.message "Visitors to yogthos.net from "
+    [:div.message "Unique visitors to yogthos.net from "
      (let [fmt           "MMM dd"
            today         (new Date)
            five-days-ago (doto (new Date) (.setTime (- (.getTime today) 345600000)))] 

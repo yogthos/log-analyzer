@@ -4,6 +4,12 @@ function hitsByOS(d) {
      legend: {show: false}});
 }
 
+function hitsByBrowser(d) {	
+	$.plot($("#hits-by-browser"), d,
+	{series: {pie: {show: true}},
+     legend: {show: false}});
+}
+
 function hitsByTime(d) {
    $.plot($("#hits-by-time"), [d],
     {xaxis: { mode: "time", minTickSize: [1, "minute"]},
@@ -28,6 +34,7 @@ $(document).ready(function(){
 	           hitsByTime(data.time);
 	           hitsByOS(data.os);
 	           hitsByRoute(data.route);
+	           hitsByBrowser(data.browser);
 	       });		
 });
 

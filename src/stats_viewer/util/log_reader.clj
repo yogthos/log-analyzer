@@ -53,6 +53,18 @@
             (sorted-map))
     vec))
 
+
+(defn group-by-browser [logs]
+  (->> logs
+    (group-by (fn [{:keys [browser]}]                 
+                (cond
+                  (nil? browser) "other"
+                  (re-find #"Firefox" browser) "Firefox"
+                  (re-find #"WebKit" browser) "WebKit"
+                  (re-find #"MSIE" browser) "IE"    
+                  :else "other")))
+    (map (fn [[k v]] {:label k :data (count v)}))))
+
 (defn group-by-os [logs]  
   (->> logs
     (group-by (fn [{:keys [browser]}]                 
@@ -98,8 +110,9 @@
                (parse-files (take-last n (list-files)))
                (group-by :ip)
                (map #(first (second %))))] 
-    {:total (count logs)
-     :time  (group-by-time logs)
-     :os    (group-by-os logs)
-     :route (group-by-route logs)}))
+    {:total   (count logs)
+     :time    (group-by-time logs)
+     :os      (group-by-os logs)
+     :browser (group-by-browser logs)
+     :route   (group-by-route logs)}))
 

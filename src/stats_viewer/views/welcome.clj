@@ -29,7 +29,9 @@
     [:div#hits-by-time]           
     [:div
      [:div#hits-by-os]
-     [:div#hits-by-route]]))
+     [:div#hits-by-route]]
+    [:br]
+    [:div#hits-by-browser]))
 
 (defpage [:post "/get-logs"] []  
   (cache :hits (response/json (log-reader/get-logs 5))))

@@ -1,7 +1,7 @@
 html, body {
 	height: 100%; /* make the percentage height on placeholder work */
 	color: #bbb;
-	background-color: #000;
+	background-color: #333;
 }
 .message {
     padding-left: 50px;    
@@ -33,6 +33,13 @@ html, body {
 	width:400px;
 	height:400px;
 	float:left;	
+}
+#hits-by-browser {
+	width: 400px;
+	height: 400px;
+	float: left;
+	margin-left: 25px;
+	margin-right: 25px;	
 }
 .xaxisLabel {
     color: #bbb;

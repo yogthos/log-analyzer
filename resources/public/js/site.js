@@ -5,14 +5,17 @@ function hitsByOS(d) {
 }
 
 function hitsByTime(d) {
-   $.plot($("#hits-by-time"), [d], {xaxis: { mode: "time", minTickSize: [1, "minute"]}});
+   $.plot($("#hits-by-time"), [d],
+    {xaxis: { mode: "time", minTickSize: [1, "minute"]},
+     xaxes: [{position: "bottom", axisLabel: "Time"}],
+     yaxes: [{position: "left", axisLabel: "Hits"}]});
 }
 
 function hitsByRoute(d) {     
 	$.plot($("#hits-by-route"), d,
 	{series: {pie: {show: true,
 	                combine: {color: '#999',
-                              threshold: 0.01}}},
+                              threshold: 0.03}}},
      legend: {show: false}});
 }
 

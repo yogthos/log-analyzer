@@ -8,8 +8,8 @@
     java.util.zip.GZIPInputStream
     java.io.RandomAccessFile))
 
-;(def log-path "/var/log/glassfish-access-logs/")
-(def log-path "logs/")
+(def log-path "/var/log/glassfish-access-logs/")
+;(def log-path "logs/")
 
 (defn parse-line [line]
   (merge 
@@ -29,6 +29,11 @@
     (.seek raf (.length raf))
     (raf-seq raf)))
 
+;;todo use an agent to tail the file
+#_(doseq [line (line-seq rdr)]
+      (let [date (round-ms-down-to-nearest-sec (:access-time (parse-line line)))] 
+        (swap! logs update-in [date] (fn [x] (if x (inc x) 1)))))
+
 (defn round-ms-down-to-nearest-sec [date]
   (when date
     ( * 1000 (quot (.getTime date) 1000))))
@@ -40,11 +45,6 @@
   ([date] (format-date date "yyyy-MM-dd"))
   ([date fmt]
     (.format (new java.text.SimpleDateFormat fmt) date)))
-
-;;todo use an agent to tail the file
-#_(doseq [line (line-seq rdr)]
-      (let [date (round-ms-down-to-nearest-sec (:access-time (parse-line line)))] 
-        (swap! logs update-in [date] (fn [x] (if x (inc x) 1)))))
 
 (defn group-by-time [logs]
   (->> logs
@@ -94,10 +94,12 @@
     files))
 
 (defn get-logs [n]
-  (let [logs (parse-files (take-last 5 (list-files)))] 
+  (let [logs (->>
+               (parse-files (take-last n (list-files)))
+               (group-by :ip)
+               (map #(first (second %))))] 
     {:total (count logs)
      :time  (group-by-time logs)
      :os    (group-by-os logs)
      :route (group-by-route logs)}))
-
 

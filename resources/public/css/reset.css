@@ -1,16 +1,19 @@
 html, body {
 	height: 100%; /* make the percentage height on placeholder work */
+	color: #bbb;
+	background-color: #000;
 }
 .message {
     padding-left: 50px;    
 }
 #total {
-    padding-left: 50px;   
+    padding-left: 50px;
+    margin-bottom: 25px;   
 }
 #hits-by-time {
 	align: center;
 	width:850px;
-	height:400px;
+	height:400px;	
 	margin-bottom:50px;	
 }
 #overview {
@@ -30,4 +33,10 @@ html, body {
 	width:400px;
 	height:400px;
 	float:left;	
+}
+.xaxisLabel {
+    color: #bbb;
+  }
+.yaxisLabel {
+    color: #bbb;
 }

@@ -3,7 +3,8 @@
             [stats-viewer.util.log-reader :as log-reader]
             [noir.response :as response]
             [noir.request :as request])
-  (:use noir.core hiccup.form))
+  (:use noir.core hiccup.form)
+  (:import java.util.Date))
 
 (def cached (atom {}))
 
@@ -18,7 +19,12 @@
 (defpage "/" req  
   (common/layout  
     (hidden-field "context" (:context (request/ring-request)))
-    [:div.message "Visitors to yogthos.net for " (log-reader/format-date (new java.util.Date))]
+    [:div.message "Visitors to yogthos.net from "
+     (let [fmt           "MMM dd"
+           today         (new Date)
+           five-days-ago (doto (new Date) (.setTime (- (.getTime today) 345600000)))] 
+       (str (log-reader/format-date five-days-ago fmt) " to " 
+            (log-reader/format-date today fmt)))]
     [:div#total "loading..."]
     [:div#hits-by-time]           
     [:div

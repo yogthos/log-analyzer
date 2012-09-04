@@ -8,8 +8,8 @@
     java.util.zip.GZIPInputStream
     java.io.RandomAccessFile))
 
-(def log-path "/var/log/glassfish-access-logs/")
-;(def log-path "logs/")
+;(def log-path "/var/log/glassfish-access-logs/")
+(def log-path "logs/")
 
 (defn parse-line [line]
   (merge 
@@ -94,12 +94,10 @@
     files))
 
 (defn get-logs [n]
-  (let [logs (->>
-               (parse-files (take 5 (list-files)))
-               (group-by :ip)
-               (mapcat second))] 
+  (let [logs (parse-files (take-last 5 (list-files)))] 
     {:total (count logs)
      :time  (group-by-time logs)
      :os    (group-by-os logs)
      :route (group-by-route logs)}))
+
 

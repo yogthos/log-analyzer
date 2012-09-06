@@ -3,7 +3,9 @@
             :dependencies [[org.clojure/clojure "1.4.0"]
                            [noir "1.3.0-beta3"]                                                      
                            [org.clojure/data.json "0.1.2"]                                           
-                           [midje "1.4.0"]]
+                           [midje "1.4.0"]
+                           ;[clj-geoip "0.1.0-SNAPSHOT"]
+                           ]
             :dev-dependencies [[lein-ring "0.7.3"]]
             :ring {:handler stats-viewer.server/handler}                        
             :main stats-viewer.server)

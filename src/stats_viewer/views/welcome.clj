@@ -22,17 +22,19 @@
     [:div.message "Unique visitors to yogthos.net from "
      (let [fmt           "MMM dd"
            today         (new Date)
-           five-days-ago (doto (new Date) (.setTime (- (.getTime today) 345600000)))] 
+           five-days-ago (doto (new Date) (.setTime (- (.getTime today) 86400000)))] 
        (str (log-reader/format-date five-days-ago fmt) " to " 
             (log-reader/format-date today fmt)))]
-    [:div#total "loading..."]
-    [:div#hits-by-time]           
-    [:div
-     [:div#hits-by-os]
-     [:div#hits-by-route]]
-    [:br]
-    [:div#hits-by-browser]))
+    [:div#unique "loading..."]
+    [:div#hits-by-time]
+    [:div#total ""]    
+    [:div#all-hits-by-time]
+    [:div#hits-by-os]
+    [:div#hits-by-route]
+    
+    [:div#hits-by-browser]
+    [:div#hits-by-country]))
 
 (defpage [:post "/get-logs"] []  
-  (cache :hits (response/json (log-reader/get-logs 5))))
+  (cache :hits (response/json (log-reader/get-logs 2))))
 

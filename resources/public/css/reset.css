@@ -1,20 +1,35 @@
 html, body {
-	height: 100%; /* make the percentage height on placeholder work */
-	color: #bbb;
-	background-color: #333;
+       height: 100%; /* make the percentage height on placeholder work */
+       color: #bbb;
+       background-color: #333;
+       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+       font-size: 14px;
 }
 .message {
     padding-left: 50px;    
 }
+#unique {
+    padding-left: 50px;
+    margin-bottom: 25px;   
+}
 #total {
     padding-left: 50px;
+    margin-top: 25px;
     margin-bottom: 25px;   
 }
 #hits-by-time {
 	align: center;
 	width:850px;
 	height:400px;	
-	margin-bottom:50px;	
+	margin-bottom:50px;
+	clear:both;	
+}
+#all-hits-by-time {
+	align: center;
+	width:850px;
+	height:400px;	
+	margin-bottom:50px;
+	clear:both;	
 }
 #overview {
 	margin-left: 50px;
@@ -29,17 +44,23 @@ html, body {
 	margin-left: 25px;
 	margin-right: 25px;	
 }
-#hits-by-route {
+#hits-by-route {    
 	width:400px;
 	height:400px;
 	float:left;	
 }
 #hits-by-browser {
+	clear:both;
 	width: 400px;
 	height: 400px;
 	float: left;
 	margin-left: 25px;
 	margin-right: 25px;	
+}
+#hits-by-country {
+	width: 400px;
+	height: 400px;
+	float: left;		
 }
 .xaxisLabel {
     color: #bbb;

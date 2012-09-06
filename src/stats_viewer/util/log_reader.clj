@@ -1,5 +1,5 @@
 (ns stats-viewer.util.log-reader
-  (:use clojure.java.io)
+  (:use clojure.java.io #_clj-geoip.core)
   (:import         
     [java.io File FileInputStream BufferedReader InputStreamReader]    
     java.util.Date
@@ -91,6 +91,14 @@
                 logs)
       "other")))
 
+(def ip-country-memo (memoize ip-country))
+
+(defn group-by-country [logs]
+(->> logs
+  (map #(ip-country-memo (:ip %)))
+  (group-by :country)
+  (map (fn [[k v]] {:label k :data (count v)}))))
+
 (defn list-files [] 
   (->> log-path
     (new File)
@@ -106,13 +114,18 @@
     files))
 
 (defn get-logs [n]
-  (let [logs (->>
-               (parse-files (take-last n (list-files)))
-               (group-by :ip)
-               (map #(first (second %))))] 
-    {:total   (count logs)
-     :time    (group-by-time logs)
-     :os      (group-by-os logs)
-     :browser (group-by-browser logs)
-     :route   (group-by-route logs)}))
+  (let [logs        (parse-files (take-last n (list-files)))
+        unique-logs (->> logs (group-by :ip) (map #(first (second %))))
+        by-time (group-by-time unique-logs)
+        all-by-time (group-by-time logs)] 
+    {:uniquehits  (reduce + (map second by-time))
+     :allhits  (reduce + (map second all-by-time))
+     :alltime     all-by-time    
+     :time        by-time
+     :os          (group-by-os unique-logs)
+     :browser     (group-by-browser unique-logs)
+     :route       (group-by-route unique-logs)
+     ;:country (group-by-country logs)
+     }))
+
 

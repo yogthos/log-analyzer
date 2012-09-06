@@ -91,9 +91,9 @@
                 logs)
       "other")))
 
-(def ip-country-memo (memoize ip-country))
+;(def ip-country-memo (memoize ip-country))
 
-(defn group-by-country [logs]
+#_(defn group-by-country [logs]
 (->> logs
   (map #(ip-country-memo (:ip %)))
   (group-by :country)
